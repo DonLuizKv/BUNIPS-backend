@@ -12,7 +12,7 @@ export class Database {
         this.pool = new Pool({
             host: process.env.DB_HOST,
             user: process.env.DB_USER,
-            password: process.env.DB_PASSWORD,
+            password: process.env.DB_PASS,
             database: process.env.DB_NAME,
             port: Number(process.env.DB_PORT),
             max: 20, // numero maximo de conexiones
@@ -20,11 +20,14 @@ export class Database {
         })
     }
 
+    async CONSULT(){
+        
+    }
+
     async initialize() {
         try {
             const client = await this.pool.connect();
-            const req = await client.query("SELECT NOW()");
-            Print(`- Connected to the ${process.env.DB_NAME} database :) - ${req.rows[0]}`, { color: "green", bold: true, });
+            Print(`- Connected to the ${process.env.DB_NAME} database :)`, { color: "green", bold: true, });
             client.release()
         } catch (error) {
             Print(`- Error connecting to the database: ${error}`, {
