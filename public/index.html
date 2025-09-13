@@ -16,6 +16,32 @@
 
 <body>
     <h1>Welcome to BUNI API</h1>
+    <button id="juas">pide al paciente 1</button>
+
+    <p>Data</p>
+
+    <script>
+
+        let juas = document.getElementById("juas");
+        let data = document.querySelector("p")
+
+        juas.addEventListener("click", async () => {
+            const petition = await fetch("http://localhost:5000/patient/3", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+
+            const response = await petition.json();
+            console.log(response.data);
+            
+            data.textContent = response.data.email
+
+        })
+
+
+    </script>
 </body>
 
 </html>

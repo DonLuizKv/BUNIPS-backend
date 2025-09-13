@@ -4,8 +4,9 @@ import dotenv from "dotenv"
 import http from "http";
 import path from "path";
 import cookieParser from "cookie-parser";
-import { Print } from "./utils/General";
-import { Database } from "./lib/Database/db";
+import { Database } from "./lib/Database";
+import Logger from "./lib/Logger";
+import patientRoutes from "./routes/patients.routes"
 
 // env
 dotenv.config();
@@ -15,7 +16,8 @@ const ORIGINS = process.env.ORIGINS?.split(",") || [];
 // Server
 const app = express();
 const server = http.createServer(app);
-const database = new Database();
+const DBConnection = Database.getInstance();
+const DBConnection2 = Database.getInstance();
 
 // configs
 const CorsOptions = {
@@ -26,16 +28,17 @@ const CorsOptions = {
 };
 
 // WebSocket & Database
-database.initialize();
+DBConnection.initialize();
 
 // Middleware
 app.use(cors(CorsOptions));
 app.use(express.json());
 app.use(cookieParser());
+app.use(Logger.httpMiddleware())
 
 // Routes
 // app.use("/auth", authRoutes);
-// app.use("/user", Authenticate, userRoutes);
+app.use("/patient", patientRoutes);
 
 app.use(express.static(path.join(__dirname, '../public')));
 app.get('/', (req, res) => {
@@ -43,5 +46,5 @@ app.get('/', (req, res) => {
 });
 
 server.listen(PORT, () => {
-    Print(`\n- Server is running on port ${PORT}`, { color: "cyan", bold: true, italic: true });
+    Logger.info(`Server is running on port ${PORT}`, { prefix: "\n" })
 });
