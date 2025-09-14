@@ -1,11 +1,5 @@
 import { Database } from "../lib/Database";
-
-export type patientModel = {
-    GET: (id: string) => Promise<any>;
-    POST: (data: any) => Promise<any>;
-    UPDATE: (id: string, data: any) => Promise<any>;
-    DELETE: (id: string) => Promise<any>;
-}
+import { patientModel } from "../types/Models";
 
 const db = Database.getInstance();
 
@@ -18,9 +12,7 @@ type patient = {
 }
 
 const GET = async (id:string) => {
-    const [result]= await db.query<patient>("SELECT * FROM patient WHERE id = $1",[id]);
-    console.log(result);
-    
+    const [result]= await db.query<patient>("SELECT * FROM patient WHERE id = $1",[id]);    
     return result;
 };
 

@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser";
 import { Database } from "./lib/Database";
 import Logger from "./lib/Logger";
 import patientRoutes from "./routes/patients.routes"
+import { Sockets } from "./lib/Sockets";
 
 // env
 dotenv.config();
@@ -16,8 +17,8 @@ const ORIGINS = process.env.ORIGINS?.split(",") || [];
 // Server
 const app = express();
 const server = http.createServer(app);
-const DBConnection = Database.getInstance();
-const DBConnection2 = Database.getInstance();
+// const DBConnection = Database.getInstance();
+const SocketServer = new Sockets(server);
 
 // configs
 const CorsOptions = {
@@ -28,7 +29,8 @@ const CorsOptions = {
 };
 
 // WebSocket & Database
-DBConnection.initialize();
+// DBConnection.initialize();
+SocketServer.initialize();
 
 // Middleware
 app.use(cors(CorsOptions));

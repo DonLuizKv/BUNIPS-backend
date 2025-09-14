@@ -12,6 +12,7 @@
             background: rgb(165, 165, 165);
         }
     </style>
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
 </head>
 
 <body>
@@ -35,11 +36,35 @@
 
             const response = await petition.json();
             console.log(response.data);
-            
+
             data.textContent = response.data.email
 
         })
 
+        const socket = io("http://localhost:5000");
+
+        // Evento al conectar
+        socket.on("connect", () => {
+            console.log("Conectado ✅ con id:", socket.id);
+
+            // Enviar mensaje al servidor
+            socket.emit("mensaje", "Hola servidor 👋");
+        });
+
+        // Escuchar respuestas
+        socket.on("respuesta", (data) => {
+            console.log("Servidor dice:", data);
+        });
+
+        // Errores
+        socket.on("connect_error", (err) => {
+            console.error("Error de conexión:", err.message);
+        });
+
+        // Desconexión
+        socket.on("disconnect", () => {
+            console.log("Desconectado ❌");
+        });
 
     </script>
 </body>
