@@ -1,0 +1,38 @@
+Si:
+eventos de cambios en perfil: 
+	actualización de los perfiles de los psicólogos en tiempo real 
+	(psicólogo --> paciente)
+
+eventos de notificaciones: 
+	entre clientes (psicólogo acepta cita al paciente)
+
+evento de moderación: 
+	bloqueo en tiempo real
+
+evento de cambios en cita: 
+	actualización de citas en tiempo real 
+	(psicologo<--->paciente)
+
+probablemente:
+
+métricas del admin: métricas en tiempo real del dashboard de administrador.
+gestión de roles: vista en tiempo real de cambios a los roles de un moderador.
+
+
+probablemente no:
+
+historial clínico: actualización del historial.
+
+notificaciones: enviaran un mensaje GENERAL:nofify
+
+benchmark:
+    estadisticas en tiempo real - GENERAL:stadistics
+
+
+//=============================================//
+opcional:
+en las citas, van a haber un numero maximo de intentos de cancelacion
+cuando se superen, no se pododran agendar mas citas y habria que esperar cierto tiempo
+pasado cierto tiempo se tiene que ejecutar un bloque de codigo en el backend
+
+//=============================================//

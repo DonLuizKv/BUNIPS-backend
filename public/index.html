@@ -22,26 +22,38 @@
     <p>Data</p>
 
     <script>
+        const socket = io("http://localhost:5000");
 
         let juas = document.getElementById("juas");
         let data = document.querySelector("p")
 
         juas.addEventListener("click", async () => {
-            const petition = await fetch("http://localhost:5000/patient/3", {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json"
+            // const petition = await fetch("http://localhost:5000/patient/3", {
+            //     method: "GET",
+            //     headers: {
+            //         "Content-Type": "application/json"
+            //     }
+            // });
+
+            // const response = await petition.json();
+            // console.log(response.data);
+
+            // data.textContent = response.data.email
+            socket.emit("adm:psy:create", [
+                {
+                    channel:["psy", "adm"],
+                    data:{
+                        id:1
+                    }
+                },
+                {
+                    channel:"patient",
+                    msg:"se ha creado un nuevo administrador"
                 }
-            });
-
-            const response = await petition.json();
-            console.log(response.data);
-
-            data.textContent = response.data.email
+            ]);
 
         })
 
-        const socket = io("http://localhost:5000");
 
         // Evento al conectar
         socket.on("connect", () => {
@@ -52,12 +64,13 @@
         });
 
         // Escuchar respuestas
-        socket.on("respuesta", (data) => {
-            console.log("Servidor dice:", data);
-        });
+        socket.on("adm", (msg) => {
+            console.log(msg);
+            
+        })
 
         // Errores
-        socket.on("connect_error", (err) => {
+        socket.on("error", (err) => {
             console.error("Error de conexión:", err.message);
         });
 
