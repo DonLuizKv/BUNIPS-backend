@@ -1,30 +1,22 @@
-import { Database } from "../lib/Database";
-import { patientModel } from "../types/Models";
+import { IntfPatientModel } from "../types/Models";
+import { Patient } from "../types/user";
+import { Model } from "./Model";
 
-const db = Database.getInstance();
+export class PatientModel extends Model<Patient> implements IntfPatientModel {
+    private static instance: PatientModel;
 
-type patient = {
-    id:string,
-    name:string,
-    email:string,
-    faculty:string,
-    semester:number,
+    constructor() {
+        super("patients");
+    }
+
+    // singleton
+    static getInstance(): PatientModel {
+        if (!this.instance) {
+            this.instance = new PatientModel();
+        }
+        return this.instance;
+    }
+
+    // patients methods
+    async getAppointments(){}
 }
-
-const GET = async (id:string) => {
-    const [result]= await db.query<patient>("SELECT * FROM patient WHERE id = $1",[id]);    
-    return result;
-};
-
-const POST = async () => { };
-
-const UPDATE = async () => { };
-
-const DELETE = async () => { };
-
-export const PatientModel: patientModel = {
-    GET,
-    POST,
-    UPDATE,
-    DELETE
-};

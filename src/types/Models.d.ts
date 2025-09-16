@@ -1,20 +1,23 @@
-export type patientModel = {
-    GET: (id: string) => Promise<any>;
-    POST: (data: any) => Promise<any>;
-    UPDATE: (id: string, data: any) => Promise<any>;
-    DELETE: (id: string) => Promise<any>;
+import { Appointment } from "./appoiments";
+import { Admin, Modder, Patient, Psychologist } from "./user";
+
+interface IntfModel<T> {
+    GET: (id: string) => Promise<T>;
+    GETALL: () => Promise<T[]>;
+    POST: (data: T) => Promise<void>;
+    UPDATE: (id: string, data: T) => Promise<void>;
+    DELETE: (id: string) => Promise<boolean>;
 }
 
-export type pysichologistModel = {
-    GET: (id: string) => Promise<any>;
-    POST: (data: any) => Promise<any>;
-    UPDATE: (id: string, data: any) => Promise<any>;
-    DELETE: (id: string) => Promise<any>;
-}
+// USER MODELS
+export interface IntfPatientModel extends Model<Patient> { };
 
-export type adminModel = {
-    GET: (id: string) => Promise<any>;
-    POST: (data: any) => Promise<any>;
-    UPDATE: (id: string, data: any) => Promise<any>;
-    DELETE: (id: string) => Promise<any>;
-}
+export interface IntfPsychologistModel extends Model<Psychologist> { };
+
+export interface IntfAdminModel extends Model<Admin> { };
+
+export interface IntfModderModel extends Model<Modder> { };
+
+// OTHERS MODELS
+export interface IntfAppointmentModel extends Model<Appointment> { };
+

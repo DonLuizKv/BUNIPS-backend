@@ -5,7 +5,6 @@
  * Completed: Cuando el paciente termina la sesion
  * Cancelled: Cuando el paciente cancela la sesion
  */
-
 type AppointmentStatus = "pending" | "confirmed" | "in-progress" | "completed" | "cancelled";
 
 /**
@@ -19,7 +18,7 @@ type AppointmentStatus = "pending" | "confirmed" | "in-progress" | "completed" |
  * reason?: motivo de la cita
  * revised: si la cita fue revisada
  */
-interface Appointment {
+export interface Appointment {
     id: string;
     patientName?: string;
     psychologistName?: string;

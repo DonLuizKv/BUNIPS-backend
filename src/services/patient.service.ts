@@ -1,25 +1,38 @@
-import { patientModel, PatientModel } from "../models/patient.model";
+import { PatientModel } from "../models/patient.model";
 
 export class PatientService {
-    constructor(private readonly Model: patientModel = PatientModel) { }
+    private static instance: PatientService;
 
-    getPatient(id: string) {
-        return this.Model.GET(id);
+    constructor(
+        private readonly Model: PatientModel = PatientModel.getInstance()
+    ) { }
+
+    // singleton
+    static getInstance(): PatientService {
+        if (!this.instance) {
+            this.instance = new PatientService();
+        }
+        return this.instance;
     }
 
-    getAllPatients() {
+    // methods
+    async getPatient(id: string) {
+        this.Model.GET(id)
+    }
+
+    async getAllPatients() {
 
     }
 
-    createPatient() {
+    async createPatient() {
 
     }
 
-    updatePatient() {
+    async updatePatient() {
 
     }
 
-    deletePatient() {
+    async deletePatient() {
 
     }
 }
