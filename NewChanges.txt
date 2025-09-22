@@ -32,3 +32,126 @@ en las citas, van a haber un numero maximo de intentos de cancelacion
 cuando se superen, no se pododran agendar mas citas y habria que esperar cierto tiempo
 pasado cierto tiempo se tiene que ejecutar un bloque de codigo en el backend
 
+// import { Server, Socket } from "socket.io";
+// // <channel>:<entity>:<action>
+// // <channel>:<entity>
+// // <channel>:<action>
+
+// // eventos mas que todo peer to peer
+// // <entity>:<action>
+
+// // DEFINIR COMO ENVIA EL EMISOR
+// // DEFINIR COMO SE PROCESAN LOS DATOS
+// // DEFINIR COMO RECIBE EL RECEPTOR
+
+// // definimos en el servidor el nombre del evento
+// // que el cliente va a escuchar siempre
+
+// /**
+//  * el psicolgo cancela una cita
+//  * el servidor escucha ese evento y determina a quien
+//  * le va a mandar esa cancelacion Y POR DONDE se la va a mandar
+//  */
+
+// type Channel = "gen" | "adm" | "mod" | "psy" | "pa";
+// type Actions = "CREATE" | "UPDATE" | "DELETE" | "ACCEPT" | "CANCEL";
+
+// type DataEventConfig = {
+//     type: "direct" | "dispatch";
+//     to?: string;
+//     channels: Channel[],
+//     data: Record<string, string | number | boolean>
+// }
+
+// type directiveConfig = {
+//     channel: string,
+//     entity?: string,
+//     action?: string,
+// }
+
+// export class Events {
+//     constructor(
+//         private io: Server,
+//         private socket: Socket,
+//         private connectedSockets: Map<string, string>
+//     ) { }
+
+//     /**
+//      * 
+//      * @param data 
+//      * @returns Directive for event (channel:entity:action)
+//      */
+//     private Directive(config: directiveConfig): string {
+
+//         return "";
+//     }
+
+//     private distpatch() {
+
+//     }
+
+//     private directDistpatch(to: string, data: any) {
+
+//     }
+
+//     private Psychologist() {
+//         this.socket.on("PSY:APPOINTMENT", (data: DataEventConfig) => {
+//             const channelToSend = "PA:APPOINTMENT"; // definir si es p2p
+//             this.io.to("id paciente").emit(channelToSend, data)
+//         });
+
+//         this.socket.on("PSY:PROFILE:UPDATE", (data: DataEventConfig) => {
+//             const eventName = `${data.channels}:PSY:UPDATE`; // es diferente el destino pero es igual la razon
+//             this.io.to(data.channels).emit(eventName, data)
+//         });
+//     }
+
+//     private Appointments() {
+//         // Peer To Peer
+//         this.socket.on("APT:CANCEL", (data: DataEventConfig) => {
+//             // recibimos al emisor y al receptor
+//             const communicators = {
+//                 from: this.connectedSockets.get(this.socket.id),
+//                 to: data.to,
+//             }
+
+//             // extraemos el prefijo del receptor
+//             const channelToSend = data.to?.includes("PA") ? "PA:APT" : "";
+
+//             // armamos la directriz
+
+//             // empaquetamos y enviamos el mensaje al receptor
+//             this.io.to("id paciente").emit(channelToSend, data)
+//         });
+
+//         this.socket.on("APT:ACCEPT", (data: DataEventConfig) => {
+//             const channelToSend = "PA:APT"; // definir si es p2p
+//             this.io.to("id paciente").emit(channelToSend, data)
+//         });
+//     }
+
+//     init() {
+//         this.Appointments();
+//     }
+// }
+
+// // private directDispatch(targetUserId: string, data: any) {
+// //     const targetSocketId = userSockets.get(targetUserId);
+// //     if (targetSocketId) {
+// //         this.io.to(targetSocketId).emit("direct-message", data);
+// //     }
+// // }
+
+// // private dispatch(configs: DataEventConfig[]) {
+// //     configs.forEach(cfg => {
+// //         if (cfg.type === "broadcast" && cfg.channels) {
+// //             cfg.channels.forEach(ch => {
+// //                 this.io.to(ch).emit(ch, cfg.data);
+// //             });
+// //         }
+
+// //         if (cfg.type === "direct" && cfg.to) {
+// //             this.directDispatch(cfg.to, cfg.data);
+// //         }
+// //     });
+// // }

@@ -19,41 +19,42 @@
     <h1>Welcome to BUNI API</h1>
     <button id="juas">pide al paciente 1</button>
 
-    <p>Data</p>
+    <p>data desde cada canal</p>
+    <p id="admChannel"></p>
+    <p id="psyChannel"></p>
+    <p id="paChannel"></p>
+
 
     <script>
         const socket = io("http://localhost:5000");
 
         let juas = document.getElementById("juas");
         let data = document.querySelector("p")
+        let adm = document.getElementById("admChannel")
+        let psy = document.getElementById("psyChannel")
+        let pa = document.getElementById("paChannel")
 
         juas.addEventListener("click", async () => {
-            // const petition = await fetch("http://localhost:5000/patient/3", {
-            //     method: "GET",
-            //     headers: {
-            //         "Content-Type": "application/json"
-            //     }
-            // });
-
-            // const response = await petition.json();
-            // console.log(response.data);
-
-            // data.textContent = response.data.email
-            socket.emit("adm:psy:create", [
-                {
-                    channel:["psy", "adm"],
-                    data:{
-                        id:1
+            socket.emit("APT:CANCEL",
+                [
+                    {
+                        type:"direct", // tipo de envio
+                        to: "PA-12434", // direccion
+                        data:{
+                            status:false,
+                            reason:"bruto hpta"
+                        } // mensaje
+                    },
+                    {
+                        type:"broadcast",
+                        to:["psy", "adm"],
+                        data:{
+                            msg:"He cancelado la cita de pepito por bruto"
+                        }
                     }
-                },
-                {
-                    channel:"patient",
-                    msg:"se ha creado un nuevo administrador"
-                }
-            ]);
-
+                ]
+            );
         })
-
 
         // Evento al conectar
         socket.on("connect", () => {
@@ -65,8 +66,16 @@
 
         // Escuchar respuestas
         socket.on("adm", (msg) => {
-            console.log(msg);
-            
+            adm.textContent = "canal de admins: " + msg.id
+        })
+
+        socket.on("psy", (msg) => {
+            psy.textContent = "canal de psicologos: " + msg
+        })
+
+        // dashboard de citas
+        socket.on("PA:APT", (msg) => {
+            pa.textContent = "citas del paciente: " + msg.data.reason;
         })
 
         // Errores

@@ -17,7 +17,7 @@ const ORIGINS = process.env.ORIGINS?.split(",") || [];
 // Server
 const app = express();
 const server = http.createServer(app);
-const DBConnection = Database.getInstance();
+// const DBConnection = Database.getInstance();
 const WebSocket = new SocketServer(server);
 
 // configs
@@ -29,7 +29,7 @@ const CorsOptions = {
 };
 
 // WebSocket & Database
-DBConnection.initialize();
+// DBConnection.initialize();
 WebSocket.initialize();
 
 // setTimeout(()=>{

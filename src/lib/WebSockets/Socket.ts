@@ -5,7 +5,7 @@ import { Events } from './Events';
 
 export class SocketServer {
     private io: Server;
-    private connectedSockets: Map<string, Socket> = new Map();
+    private connectedSockets: Map<string, string> = new Map();
 
     constructor(server: HTTPServer) {
         this.io = new Server(server, {
@@ -18,24 +18,30 @@ export class SocketServer {
 
     initialize() {
         this.io.on('connection', (socket: Socket) => {
-            this.connectedSocket(socket)
-            
-            const events = new Events(this.io, socket);
+            Logger.socket(`Client Connected: ${socket.id}`);
+
+            this.connected(socket)
+            socket.join("adm");
+            socket.join("psy");
+            socket.join("pa");
+            const events = new Events(
+                this.io,
+                socket,
+                this.connectedSockets
+            );
 
             events.init();
 
             // info Events
-            this.disconnectedSocket(socket);
-            this.errorSocket(socket);
+            this.disconnected(socket);
+            this.error(socket);
         });
     }
 
-    private connectedSocket(socket: Socket) {
-        Logger.socket(`Client Connected: ${socket.id}`);
-        this.connectedSockets.set(socket.id, socket);
+    private connected(socket: Socket) {
     }
 
-    private disconnectedSocket(socket: Socket) {
+    private disconnected(socket: Socket) {
         socket.on("disconnect", () => {
             Logger.socket(`Client Disconnected: ${socket.id}`, {
                 styles: {
@@ -46,7 +52,7 @@ export class SocketServer {
         });
     }
 
-    private errorSocket(socket: Socket) {
+    private error(socket: Socket) {
         socket.on("error", (error: Error) => {
             Logger.error(`Error from client: ${error}`);
         });
@@ -54,10 +60,6 @@ export class SocketServer {
 
     getConnectedClients(): string[] {
         return Array.from(this.connectedSockets.keys());
-    }
-
-    getSocketById(id: string): Socket | undefined {
-        return this.connectedSockets.get(id);
     }
 
     getTotalClients(): number {
